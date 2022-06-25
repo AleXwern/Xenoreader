@@ -1,28 +1,18 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_putendl.c                                       :+:      :+:    :+:   */
+/*   ft_abs.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: anystrom <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: anystrom <anystrom@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2019/10/25 13:38:12 by anystrom          #+#    #+#             */
-/*   Updated: 2019/10/30 13:06:41 by anystrom         ###   ########.fr       */
+/*   Created: 2020/03/09 13:51:18 by anystrom          #+#    #+#             */
+/*   Updated: 2020/03/09 13:52:11 by anystrom         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libft.h"
-
-void	ft_putendl(char const *s)
+int		ft_abs(int num)
 {
-	int				i;
-	unsigned char	c;
-
-	i = 0;
-	while (s[i] != '\0')
-	{
-		c = (unsigned char)s[i];
-		write(1, &c, 1);
-		i++;
-	}
-	write(1, "\n", 1);
+	if (num < 0)
+		num *= -1;
+	return (num);
 }

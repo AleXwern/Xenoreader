@@ -1,33 +1,19 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_puthex.c                                        :+:      :+:    :+:   */
+/*   ft_putendl_fd.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: anystrom <anystrom@student.42.fr>          +#+  +:+       +#+        */
+/*   By: anystrom <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2020/01/07 14:44:52 by exam              #+#    #+#             */
-/*   Updated: 2020/01/20 16:31:34 by anystrom         ###   ########.fr       */
+/*   Created: 2019/10/28 11:33:47 by anystrom          #+#    #+#             */
+/*   Updated: 2019/11/02 12:06:59 by anystrom         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <unistd.h>
+#include "libft.h"
 
-void	ft_puthex(int num)
+void	ft_putendl_fd(const char *s, int fd)
 {
-	char			c;
-
-	c = '0';
-	if (num > 15)
-	{
-		ft_puthex(num / 16);
-		num = num % 16;
-	}
-	while (num > 0)
-	{
-		num--;
-		c++;
-		if (c == ':')
-			c = 'a';
-	}
-	write(1, &c, 1);
+	ft_putstr_fd(s, fd);
+	write(fd, "\n", 1);
 }

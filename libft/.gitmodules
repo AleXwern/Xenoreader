@@ -1,0 +1,9 @@
+[submodule "ft_malloc"]
+	path = ft_malloc
+	url = git@github.com:AleXwern/ft_malloc.git
+[submodule "Libft_ASM"]
+	path = Libft_ASM
+	url = git@github.com:AleXwern/Libft_ASM.git
+[submodule "Catch2"]
+	path = Catch2
+	url = git@github.com:catchorg/Catch2.git

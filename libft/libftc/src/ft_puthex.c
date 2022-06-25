@@ -1,33 +1,33 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_putnbr_fd.c                                     :+:      :+:    :+:   */
+/*   ft_puthex.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: anystrom <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: anystrom <anystrom@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2019/10/28 11:51:37 by anystrom          #+#    #+#             */
-/*   Updated: 2019/11/02 12:15:47 by anystrom         ###   ########.fr       */
+/*   Created: 2020/01/07 14:44:52 by exam              #+#    #+#             */
+/*   Updated: 2020/10/19 16:02:13 by anystrom         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-void	ft_putnbr_fd(int n, int fd)
+void	ft_puthex(unsigned int num)
 {
-	unsigned char	c;
+	char			c;
 
-	if (n == -2147483648)
+	c = '0';
+	if (num > 15)
 	{
-		ft_putstr_fd("-2147483648", fd);
-		return ;
+		ft_puthex(num / 16);
+		num = num % 16;
 	}
-	if (n < 0)
+	while (num > 0)
 	{
-		write(fd, "-", 1);
-		n = n * -1;
+		num--;
+		c++;
+		if (c == ':')
+			c = 'a';
 	}
-	if (n > 9)
-		ft_putnbr_fd(n / 10, fd);
-	c = (n % 10) + 48;
-	write(fd, &c, 1);
+	write(1, &c, 1);
 }

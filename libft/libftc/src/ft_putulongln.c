@@ -1,31 +1,19 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_strncpy.c                                       :+:      :+:    :+:   */
+/*   ft_putulongln.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: anystrom <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: AleXwern <AleXwern@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2019/10/21 13:50:27 by anystrom          #+#    #+#             */
-/*   Updated: 2019/10/30 12:43:14 by anystrom         ###   ########.fr       */
+/*   Created: 2022/06/19 22:40:40 by AleXwern          #+#    #+#             */
+/*   Updated: 2022/06/19 22:58:07 by AleXwern         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-char	*ft_strncpy(char *dst, const char *src, size_t len)
+void	ft_putulongln(t_uint64 n)
 {
-	size_t		i;
-
-	i = 0;
-	while (src[i] != '\0' && i < len)
-	{
-		dst[i] = src[i];
-		i++;
-	}
-	while (i < len)
-	{
-		dst[i] = '\0';
-		i++;
-	}
-	return (dst);
+	ft_putulong(n);
+	write(1, "\n", 1);
 }

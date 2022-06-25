@@ -1,28 +1,31 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_putendl_fd.c                                    :+:      :+:    :+:   */
+/*   ft_intsize.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: anystrom <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: AleXwern <AleXwern@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2019/10/28 11:33:47 by anystrom          #+#    #+#             */
-/*   Updated: 2019/11/02 12:06:59 by anystrom         ###   ########.fr       */
+/*   Created: 2019/11/02 17:58:35 by anystrom          #+#    #+#             */
+/*   Updated: 2022/06/12 00:44:43 by AleXwern         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-void	ft_putendl_fd(const char *s, int fd)
+size_t		ft_intsize(long n)
 {
-	int				i;
-	unsigned char	c;
+	int		size;
 
-	i = 0;
-	while (s[i] != '\0')
+	size = 0;
+	if (n < 0)
 	{
-		c = (unsigned char)s[i];
-		write(fd, &c, 1);
-		i++;
+		size++;
+		n = n * -1;
 	}
-	write(fd, "\n", 1);
+	while (n > 9)
+	{
+		size++;
+		n /= 10;
+	}
+	return (size++);
 }

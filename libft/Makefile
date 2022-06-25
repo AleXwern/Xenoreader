@@ -5,46 +5,65 @@
 #                                                     +:+ +:+         +:+      #
 #    By: AleXwern <AleXwern@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
-#    Created: 2019/10/30 16:09:13 by anystrom          #+#    #+#              #
-#    Updated: 2020/08/03 16:03:11 by AleXwern         ###   ########.fr        #
+#    Created: 2022/06/11 23:38:19 by AleXwern          #+#    #+#              #
+#    Updated: 2022/06/12 01:20:58 by AleXwern         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
-NAME = libft.a
-SRCS = ft_memalloc.c ft_putendl.c ft_strcpy.c ft_strmapi.c ft_strsub.c \
-	ft_memccpy.c ft_putendl_fd.c ft_strdel.c ft_strncat.c ft_strtrim.c \
-	ft_atoi.c ft_memchr.c ft_putnbr.c ft_strdup.c ft_strncmp.c \
-	ft_tolower.c ft_bzero.c ft_memcmp.c ft_putnbr_fd.c ft_strequ.c \
-	ft_strncpy.c ft_toupper.c ft_isalnum.c ft_memcpy.c ft_putstr.c \
-	ft_striter.c ft_strnequ.c ft_isalpha.c ft_memdel.c ft_putstr_fd.c \
-	ft_striteri.c ft_strnew.c ft_isascii.c ft_memmove.c ft_strcat.c \
-	ft_strjoin.c ft_strnstr.c ft_isdigit.c ft_memset.c ft_strchr.c \
-	ft_strlcat.c ft_strrchr.c ft_isprint.c ft_putchar.c ft_strclr.c \
-	ft_strlen.c ft_strsplit.c ft_itoa.c ft_putchar_fd.c ft_strcmp.c \
-	ft_strmap.c ft_strstr.c ft_wordlen.c ft_isblank.c ft_isnegative.c \
-	ft_intsize.c ft_isextascii.c get_next_line.c ft_puthex.c ft_lcm.c
-OBJS = $(SRCS:.c=.o)
-INCLS = ./
-OBJFLD = ../obj/
-GREEN = \033[0;32m
-STOP = \033[0m
+NAME	= libft.a
+FLAG	= -m64 -no-pie -Wall -Wextra -Werror
+SRC		= wordwrap_test.cpp romannumerals_test.cpp primefactors_test.cpp
+TEST	= $(addprefix ./build/,$(TESTS))
+OBJ		= $(addprefix ./obj/,$(SRC:.c=.o))
+LIBFT	= Libft_ASM.a
+INCLS	= -I ./includes
+GREEN	= \033[0;32m
+PURPLE	= \033[0;35m
+STOP	= \033[0m
+TEMP0	= 0
 
-.PHONY: all clean fclean re
+.PHONY: all clean fclean re libft
 
 all: $(NAME)
 
-%.o:%.c
-	@gcc -Wall -Wextra -Werror $(FLG) -I $(INCLS) -o $@ -c $<
-	@echo "Compiling Libft -> $(GREEN)$@$(STOP)"
+./obj/%.o:./tests/%.c
+	@echo "Compiling $(GREEN)$@$(STOP)"
+	@mkdir -p obj
+	@g++ $(FLAG) -c $< -o $@ $(INCLS)
 
-$(NAME): $(OBJS)
-	@ar rc $(NAME) $(OBJS)
-	@ranlib $(NAME)
+libft:
+	@make -C libft_asm objonly
+	@make -C libftc
+	@make -C ft_malloc
+	@make -C libax
+	@make -C libgfx
+
+$(NAME): libft
+	@echo "Building $(PURPLE)Libft$(STOP) libraries"
+	@mkdir -p build
+	@cp libftc/libft.a build
+	@cp libftc/includes/* includes
+	@cp libax/libax.a build
+	@cp libax/includes/* includes
+	@cp libgfx/libgfx.a build
+	@cp libgfx/includes/* includes
+	@cp ft_malloc/libft_malloc.so build
+	@cp ft_malloc/includes/* includes
 
 clean:
-	@/bin/rm -f $(OBJS)
+	@/bin/rm -rf ./obj
+	@make -C libft_asm clean
+	@make -C ft_malloc clean
+	@make -C libgfx clean
+	@make -C libax clean
+	@make -C libftc clean
 
 fclean: clean
-	@/bin/rm -f $(NAME)
+	@/bin/rm -rf ./build
+	@make -C libft_asm fclean
+	@make -C ft_malloc fclean
+	@make -C libgfx fclean
+	@make -C libax fclean
+	@make -C libftc fclean
 
 re: fclean all

@@ -1,27 +1,23 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_putstr_fd.c                                     :+:      :+:    :+:   */
+/*   ft_putulong.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: anystrom <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: AleXwern <AleXwern@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2019/10/28 11:28:17 by anystrom          #+#    #+#             */
-/*   Updated: 2019/11/02 19:01:44 by anystrom         ###   ########.fr       */
+/*   Created: 2022/06/19 22:40:40 by AleXwern          #+#    #+#             */
+/*   Updated: 2022/06/19 22:58:09 by AleXwern         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-void	ft_putstr_fd(const char *s, int fd)
+void	ft_putulong(t_uint64 n)
 {
-	char			c;
-	unsigned int	i;
+	unsigned char	c;
 
-	i = 0;
-	while (s[i] != '\0')
-	{
-		c = s[i];
-		write(fd, &c, 1);
-		i++;
-	}
+	if (n > 9)
+		ft_putulong(n / 10);
+	c = (n % 10) + 48;
+	write(1, &c, 1);
 }

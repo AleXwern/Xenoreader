@@ -1,31 +1,33 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_intsize.c                                       :+:      :+:    :+:   */
+/*   ft_putnbr_fd.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: anystrom <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2019/11/02 17:58:35 by anystrom          #+#    #+#             */
-/*   Updated: 2019/11/02 17:58:54 by anystrom         ###   ########.fr       */
+/*   Created: 2019/10/28 11:51:37 by anystrom          #+#    #+#             */
+/*   Updated: 2019/11/02 12:15:47 by anystrom         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-int		ft_intsize(int n)
+void	ft_putnbr_fd(int n, int fd)
 {
-	int		size;
+	unsigned char	c;
 
-	size = 0;
+	if (n == INT_MIN)
+	{
+		ft_putstr_fd("-2147483648", fd);
+		return ;
+	}
 	if (n < 0)
 	{
-		size++;
+		write(fd, "-", 1);
 		n = n * -1;
 	}
-	while (n > 9)
-	{
-		size++;
-		n /= 10;
-	}
-	return (size++);
+	if (n > 9)
+		ft_putnbr_fd(n / 10, fd);
+	c = (n % 10) + 48;
+	write(fd, &c, 1);
 }
