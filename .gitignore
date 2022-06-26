@@ -2,3 +2,7 @@ script*
 xenord
 xenodsscript.zip
 *.evc
+old
+maptool
+out*
+.vscode

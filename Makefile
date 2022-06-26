@@ -6,48 +6,46 @@
 #    By: AleXwern <AleXwern@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/10/30 16:09:13 by anystrom          #+#    #+#              #
-#    Updated: 2020/08/03 16:06:07 by AleXwern         ###   ########.fr        #
+#    Updated: 2022/06/26 16:27:56 by AleXwern         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
-NAME = xenord
-FLG =
-SRCFILE = main.c
-SRC = $(addprefix ./src/,$(SRCFILE))
-LIBFT = ./libft/libft.a
-OBJ = $(SRC:.c=.o)
-INCL = -I ./libft
-MLXLIB = -L /usr/X11/lib/
-FRAMEWORK = -lmlx -lXext -lX11 -framework OpenGL -framework AppKit
+NAME	= xenord.exe
+FLAG	= -DONLY_LIBFT -g
+LIBFT	= Libft/build/libft.a
+# Libft/ft_malloc/libft_malloc_x86_64.so
+INCLUDES= -I includes -I Libft/includes
+LIBS	= -pthread
+VPATH	= src
+OBJS	= obj
+SRC		= $(wildcard src/*.c)
+OBJ		= $(addprefix $(OBJS)/,$(notdir $(SRC:.c=.o)))
+GREEN	= \033[0;32m
+PURPLE	= \033[0;35m
+STOP	= \033[0m
 
-.PHONY: all clean fclean re git gitrm testcomp
+.PHONY: all clean fclean re
 
 all: $(NAME)
 
 $(LIBFT):
-	@make -C ./libft
+	@make -C Libft
 
-%.o:%.c
-	gcc $(FLG) -I ./ -o $@ -c $<
+$(OBJS)/%.o: %.c
+	@mkdir -p $(@D)
+	@gcc $(FLAG) -g $(INCLUDES) -c $< -o $@
+	@echo "Compiling $(GREEN)$@$(STOP)"
 
 $(NAME): $(LIBFT) $(OBJ)
-	gcc $(FLG) $(INCL) -o $(NAME) $(OBJ) $(LIBFT)
+	@echo "Building $(PURPLE)$@$(STOP)"
+	@gcc $(FLAG) -o $(NAME) $(INCLUDES) $(OBJ) $(LIBFT) $(LIBS)
 
 clean:
-	/bin/rm -f $(OBJ)
-	make -C ./libft clean
+	/bin/rm -rf $(OBJ)
+	make -C Libft clean
 
-fclean: clean gitrm
+fclean: clean
 	/bin/rm -f $(NAME)
-	make -C ./libft fclean
-
-git:
-	git clone https://github.com/AleXwern/fillit-tests.git tests
-	mv ./tests/maps ./
-	rm -rf tests/
-
-gitrm:
-	/bin/rm -rf maps
-	/bin/rm -rf tests
+	make -C Libft fclean
 
 re: fclean all
