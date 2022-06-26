@@ -6,7 +6,7 @@
 /*   By: AleXwern <AleXwern@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/25 23:59:31 by AleXwern          #+#    #+#             */
-/*   Updated: 2022/06/26 15:51:01 by AleXwern         ###   ########.fr       */
+/*   Updated: 2022/06/26 22:09:55 by AleXwern         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,5 +27,12 @@ typedef struct	s_name
 	t_uint16	high;
 	t_uint16	low;
 }				t_name;
+
+typedef struct	s_line
+{
+	size_t		offset;
+	t_uint8		length;
+	t_uint8		*line;
+}				t_line;
 
 #endif

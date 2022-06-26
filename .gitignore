@@ -3,6 +3,8 @@ xenord
 xenodsscript.zip
 *.evc
 old
-maptool
+maptool*
 out*
 .vscode
+xenord.exe
+obj
