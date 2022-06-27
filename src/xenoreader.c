@@ -6,7 +6,7 @@
 /*   By: AleXwern <AleXwern@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/25 23:56:33 by AleXwern          #+#    #+#             */
-/*   Updated: 2022/06/26 22:30:48 by AleXwern         ###   ########.fr       */
+/*   Updated: 2022/06/27 18:42:03 by AleXwern         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -142,12 +142,13 @@ void			*write_thread(void *dat)
 	id.low = *(t_uint32*)dat;
 	while (id.high < 1000)
 	{
-		sprintf(outname, "maptool2/%03d_%03d.evc", id.high, id.low);
+		sprintf(outname, "maptool/%03d_%03d.evc", id.high, id.low);
 		sprintf(inname, "out/%03d_%03d.txt", id.high, id.low);
 		outfile = open(outname, O_RDONLY, 0);
 		contents = get_file_contents(outfile, &filesize);
 		close(outfile);
 
+		sprintf(outname, "maptool2/%03d_%03d.evc", id.high, id.low);
 		outfile = open(outname, O_WRONLY | O_TRUNC, 0);
 		infile = open(inname, O_RDONLY, 0);
 		if (outfile > 0)
@@ -156,7 +157,7 @@ void			*write_thread(void *dat)
 		oldpos = 0;
 		while ((outfile | infile) > 0)
 		{
-			if (read(infile, &line.offset, sizeof(size_t)) < 1)
+			if (read(infile, &line.offset, sizeof(size_t)) < sizeof(size_t))
 				break;
 			//read(infile, &c, 1);
 			line.length = 0;
@@ -177,11 +178,12 @@ void			*write_thread(void *dat)
 			write(outfile, &line.length, 1);
 			write(outfile, line.line, line.length-1);
 			free(line.line);
-			oldpos = line.offset + line.length;
+			oldpos = line.offset + contents[line.offset];
 		}
 		if ((outfile | infile) > 0)
 		{
 			write(outfile, contents + oldpos, filesize - oldpos);
+			printf("%s -> %lu - %lu = %lu\n", outname, filesize, oldpos, filesize - oldpos);
 		}
 		free(contents);
 		close(infile);
