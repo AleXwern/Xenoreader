@@ -6,7 +6,7 @@
 /*   By: AleXwern <AleXwern@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/06 17:17:48 by AleXwern          #+#    #+#             */
-/*   Updated: 2022/11/07 00:16:59 by AleXwern         ###   ########.fr       */
+/*   Updated: 2022/11/07 00:32:48 by AleXwern         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,8 +63,6 @@ void	Xenoreader::insertBytes(ssize_t pos, int8_t bytes)
 	if (getByte(pos+content[pos]+1))
 		return ;
 	offset = bytes - content[pos];
-	if (bytes < 0)	//For now handle only positive values
-		return;
 	content = static_cast<char*>(realloc(content, len + offset));
 	if (offset > 0)
 		memcpy(content + pos + offset + 1, content + pos + 1, len - pos);
