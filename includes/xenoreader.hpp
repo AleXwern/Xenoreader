@@ -6,7 +6,7 @@
 /*   By: AleXwern <AleXwern@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/25 23:59:31 by AleXwern          #+#    #+#             */
-/*   Updated: 2022/11/07 00:16:25 by AleXwern         ###   ########.fr       */
+/*   Updated: 2022/11/07 23:28:00 by AleXwern         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,6 +34,7 @@ private:
 	int		fd;
 	char	*content;
 	ssize_t	len;
+	size_t	pos;
 public:
 	Xenoreader(const char *file);
 	~Xenoreader(void);
@@ -47,20 +48,10 @@ public:
 	//Copy string str to spesified memory area.
 	//If the string is the wrong size the area will be edited.
 	void	strcpy(ssize_t pos, char *str);
+	//Allocates and returns size_t position of the string and the string as reference
+	size_t	getNextLine(char*& ptr);
+	//Sets the line seek position to spesified position
+	void	setPosition(size_t newpos);
 };
-
-
-typedef struct	s_name
-{
-	t_uint16	high;
-	t_uint16	low;
-}				t_name;
-
-typedef struct	s_line
-{
-	size_t		offset;
-	t_uint8		length;
-	t_uint8		*line;
-}				t_line;
 
 #endif

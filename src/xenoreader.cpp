@@ -6,7 +6,7 @@
 /*   By: AleXwern <AleXwern@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/06 17:17:48 by AleXwern          #+#    #+#             */
-/*   Updated: 2022/11/07 00:32:48 by AleXwern         ###   ########.fr       */
+/*   Updated: 2022/11/07 23:29:44 by AleXwern         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,8 @@
 Xenoreader::Xenoreader(const char *file)
 	: fd(0),
 	content(NULL),
-	len(0) 
+	len(0),
+	pos(0)
 {
 	char	buffer[BYTES_PER_READ];
 	ssize_t	bytes;
@@ -44,14 +45,14 @@ Xenoreader::~Xenoreader(void)
 		free(content);
 }
 
-char	Xenoreader::getByte(size_t pos)
+inline char		Xenoreader::getByte(size_t pos)
 {
 	if (pos < len)
 		return (content[pos]);
 	return (-1);
 }
 
-ssize_t	Xenoreader::getLength(void)
+inline ssize_t	Xenoreader::getLength(void)
 {
 	return (len);
 }
@@ -82,4 +83,14 @@ void	Xenoreader::strcpy(ssize_t pos, char *str)
 	if (newlen != getByte(pos))
 		insertBytes(pos, newlen);
 	memcpy(content+pos+1, str, newlen);
+}
+
+size_t	Xenoreader::getNextLine(char*& ptr)
+{
+	
+}
+
+void	Xenoreader::setPosition(size_t newpos)
+{
+	pos = newpos;
 }
