@@ -6,7 +6,7 @@
 /*   By: AleXwern <AleXwern@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/07 22:19:06 by AleXwern          #+#    #+#             */
-/*   Updated: 2022/11/07 23:18:24 by AleXwern         ###   ########.fr       */
+/*   Updated: 2022/11/08 23:47:01 by AleXwern         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,9 +40,9 @@ size_t	Xenoheader::length(void)
 	return (data.size());
 }
 
-void	Xenoheader::parseDataChunck(Xenoheader& xeno)
+void	Xenoheader::parseDataChunck(Xenoreader& xeno)
 {
-	
+	insert({0, NULL});
 }
 
 void	Xenoheader::parseFile(const char *name)

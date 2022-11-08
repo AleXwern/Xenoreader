@@ -6,13 +6,13 @@
 /*   By: AleXwern <AleXwern@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/06 18:38:49 by AleXwern          #+#    #+#             */
-/*   Updated: 2022/11/06 23:30:52 by AleXwern         ###   ########.fr       */
+/*   Updated: 2022/11/08 23:45:31 by AleXwern         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libft.h"
+#include "utils.hpp"
 
-int	is_shiftjis(t_uint8 b1, t_uint8 b2)
+inline int	is_shiftjis(t_uint8 b1, t_uint8 b2)
 {
 	//Single-byte kanji
 	if (b1 >= 0xA1 && b1 <= 0xDF)

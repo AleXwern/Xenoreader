@@ -6,7 +6,7 @@
 /*   By: AleXwern <AleXwern@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/06 17:17:48 by AleXwern          #+#    #+#             */
-/*   Updated: 2022/11/07 23:29:44 by AleXwern         ###   ########.fr       */
+/*   Updated: 2022/11/08 23:47:43 by AleXwern         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,7 +87,8 @@ void	Xenoreader::strcpy(ssize_t pos, char *str)
 
 size_t	Xenoreader::getNextLine(char*& ptr)
 {
-	
+	ptr = NULL;
+	return (0);
 }
 
 void	Xenoreader::setPosition(size_t newpos)
