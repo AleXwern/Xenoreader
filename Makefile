@@ -6,7 +6,7 @@
 #    By: AleXwern <AleXwern@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/10/30 16:09:13 by anystrom          #+#    #+#              #
-#    Updated: 2022/12/23 20:32:25 by AleXwern         ###   ########.fr        #
+#    Updated: 2022/12/24 01:22:22 by AleXwern         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -44,6 +44,7 @@ $(CATCH):
 tests: $(CATCH) $(NAME)
 	@mkdir -p build
 	@g++ $(FLAG) -o build/xenoreader_test.exe $(INCLUDES) test/xenoreader_test.cpp obj/xenoreader.o $(LIBFT) $(LIBS) $(CATCH)
+	@g++ $(FLAG) -o build/xenoheader_test.exe $(INCLUDES) test/xenoheader_test.cpp obj/xenoreader.o obj/xenoheader.o $(LIBFT) $(LIBS) $(CATCH)
 
 $(NAME): $(LIBFT) $(OBJ)
 	@echo "Building $(PURPLE)$@$(STOP)"
