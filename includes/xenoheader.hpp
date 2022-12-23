@@ -6,7 +6,7 @@
 /*   By: AleXwern <AleXwern@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/07 22:14:47 by AleXwern          #+#    #+#             */
-/*   Updated: 2022/12/16 23:07:03 by AleXwern         ###   ########.fr       */
+/*   Updated: 2022/12/24 01:09:19 by AleXwern         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,24 +16,21 @@
 #include "libft.h"
 #include "xenoreader.hpp"
 #include <vector>
+#include <utility>
 
-struct	s_line
-{
-	ssize_t		offset;
-	char		*line;
-};
+using t_line = std::pair<ssize_t, char*>;
 
 class Xenoheader
 {
 private:
-	std::vector<s_line>	data;
+	std::vector<t_line>	data;
 
 	friend class Xenoreader;
 public:
 	Xenoheader(void);
 	~Xenoheader();
-	void	insert(s_line line);
-	s_line	get(size_t pos);
+	void	insert(t_line);
+	t_line	get(size_t pos);
 	size_t	length(void);
 	void	parseDataChunck(Xenoreader& xeno);
 	void	parseFile(const char *name);

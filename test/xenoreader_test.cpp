@@ -6,7 +6,7 @@
 /*   By: AleXwern <AleXwern@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/23 20:14:46 by AleXwern          #+#    #+#             */
-/*   Updated: 2022/12/23 23:42:59 by AleXwern         ###   ########.fr       */
+/*   Updated: 2022/12/24 00:04:44 by AleXwern         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,6 +93,8 @@ TEST_CASE("retrieveDefaultString")
 	Xenoreader xeno("./test/test_file1.txt", true);
 	REQUIRE(xeno.getNextLine(str) == 0);
 	REQUIRE(ft_strequ(str, "hello this is a normal file with some length."));
+	if (str)
+		free(str); //Let's free this just in case
 }
 
 TEST_CASE("failingToGetLineReturnsError")
@@ -103,4 +105,15 @@ TEST_CASE("failingToGetLineReturnsError")
 	xeno.setPosition(1);
 	REQUIRE(xeno.getNextLine(str) == -1);
 	REQUIRE(str == NULL);
+}
+
+TEST_CASE("chainGNLReturnsMultipleLines")
+{
+	char	*str = NULL;
+
+	Xenoreader xeno("./test/test_file2.txt", true);
+	REQUIRE(xeno.getNextLine(str) == 0);
+	REQUIRE(ft_strequ(str, "hello"));
+	REQUIRE(xeno.getNextLine(str) == 7);
+	REQUIRE(ft_strequ(str, "This is water"));
 }

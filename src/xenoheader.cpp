@@ -6,7 +6,7 @@
 /*   By: AleXwern <AleXwern@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/07 22:19:06 by AleXwern          #+#    #+#             */
-/*   Updated: 2022/11/21 01:12:04 by AleXwern         ###   ########.fr       */
+/*   Updated: 2022/12/24 01:09:15 by AleXwern         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,17 +20,17 @@ Xenoheader::~Xenoheader()
 {
 	while (data.size() > 0)
 	{
-		free(data.back().line);
+		free(data.back().second);
 		data.pop_back();
 	}
 }
 
-void	Xenoheader::insert(s_line line)
+void	Xenoheader::insert(t_line line)
 {
 	data.push_back(line);
 }
 
-s_line	Xenoheader::get(size_t pos)
+t_line	Xenoheader::get(size_t pos)
 {
 	return (data.at(pos));
 }
@@ -42,18 +42,21 @@ size_t	Xenoheader::length(void)
 
 void	Xenoheader::parseDataChunck(Xenoreader& xeno)
 {
-	insert({0, NULL});
+	ssize_t		pos;
+	char		*ptr = NULL;
+
+	while ((pos = xeno.getNextLine(ptr)) != -1)
+		insert({pos, ptr});
 }
 
 void	Xenoheader::parseFile(const char *name)
 {
-	
 }
 
 void	Xenoheader::printDebug(void)
 {
-	for (s_line line : data)
+	for (t_line line : data)
 	{
-		std::cout << "Length: " << strlen(line.line) << " at: " << line.offset << "\n";
+		std::cout << "At: " << line.first << " Line: (" << line.second << ")";
 	}
 }
