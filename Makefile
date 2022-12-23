@@ -6,7 +6,7 @@
 #    By: AleXwern <AleXwern@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/10/30 16:09:13 by anystrom          #+#    #+#              #
-#    Updated: 2022/11/06 17:52:53 by AleXwern         ###   ########.fr        #
+#    Updated: 2022/12/23 20:32:25 by AleXwern         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -18,6 +18,7 @@ INCLUDES= -I includes -I Libft/includes
 LIBS	= -pthread
 VPATH	= src
 OBJS	= obj
+CATCH	= test/catch_amalgamated.o
 SRC		= $(wildcard src/*.cpp)
 OBJ		= $(addprefix $(OBJS)/,$(notdir $(SRC:.cpp=.o)))
 GREEN	= \033[0;32m
@@ -36,6 +37,14 @@ $(OBJS)/%.o: %.cpp
 	@g++ $(FLAG) -g $(INCLUDES) -c $< -o $@
 	@echo "Compiling $(GREEN)$@$(STOP)"
 
+$(CATCH):
+	@echo "Compiling $(GREEN)catch_amalgamated.o$(STOP)"
+	@g++ $(FLAG) -c ./catch2/extras/catch_amalgamated.cpp -o $(CATCH) $(INCLS)
+
+tests: $(CATCH) $(NAME)
+	@mkdir -p build
+	@g++ $(FLAG) -o build/xenoreader_test.exe $(INCLUDES) test/xenoreader_test.cpp obj/xenoreader.o $(LIBFT) $(LIBS) $(CATCH)
+
 $(NAME): $(LIBFT) $(OBJ)
 	@echo "Building $(PURPLE)$@$(STOP)"
 	@g++ $(FLAG) -o $(NAME) $(INCLUDES) $(OBJ) $(LIBFT) $(LIBS)
@@ -46,6 +55,7 @@ clean:
 
 fclean: clean
 	/bin/rm -f $(NAME)
+	/bin/rm -f $(CATCH)
 	make -C Libft fclean
 
 re: fclean all
