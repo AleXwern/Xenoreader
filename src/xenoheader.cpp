@@ -6,7 +6,7 @@
 /*   By: AleXwern <AleXwern@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/07 22:19:06 by AleXwern          #+#    #+#             */
-/*   Updated: 2022/11/08 23:47:01 by AleXwern         ###   ########.fr       */
+/*   Updated: 2022/11/21 01:12:04 by AleXwern         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,4 +48,12 @@ void	Xenoheader::parseDataChunck(Xenoreader& xeno)
 void	Xenoheader::parseFile(const char *name)
 {
 	
+}
+
+void	Xenoheader::printDebug(void)
+{
+	for (s_line line : data)
+	{
+		std::cout << "Length: " << strlen(line.line) << " at: " << line.offset << "\n";
+	}
 }

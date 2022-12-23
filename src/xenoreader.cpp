@@ -6,13 +6,13 @@
 /*   By: AleXwern <AleXwern@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/06 17:17:48 by AleXwern          #+#    #+#             */
-/*   Updated: 2022/11/08 23:47:43 by AleXwern         ###   ########.fr       */
+/*   Updated: 2022/12/23 23:39:14 by AleXwern         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "xenoreader.hpp"
 
-Xenoreader::Xenoreader(const char *file)
+Xenoreader::Xenoreader(const char *file, bool silenceOut)
 	: fd(0),
 	content(NULL),
 	len(0),
@@ -33,7 +33,8 @@ Xenoreader::Xenoreader(const char *file)
 		memcpy(content + len, buffer, bytes);
 		len += bytes;
 	}
-	std::cout << "Read file " << file << " with " << len << " bytes.\n";
+	if (!silenceOut)
+		std::cout << "Read file " << file << " with " << len << " bytes.\n";
 }
 
 Xenoreader::~Xenoreader(void)
@@ -45,14 +46,19 @@ Xenoreader::~Xenoreader(void)
 		free(content);
 }
 
-inline char		Xenoreader::getByte(size_t pos)
+char		Xenoreader::getByte(size_t pos)
 {
 	if (pos < len)
 		return (content[pos]);
 	return (-1);
 }
 
-inline ssize_t	Xenoreader::getLength(void)
+bool		Xenoreader::isValidRange(size_t pos)
+{
+	return (!getByte(pos + getByte(pos) + 1));
+}
+
+ssize_t	Xenoreader::getLength(void)
 {
 	return (len);
 }
@@ -61,23 +67,23 @@ void	Xenoreader::insertBytes(ssize_t pos, int8_t bytes)
 {
 	ssize_t	offset;
 
-	if (getByte(pos+content[pos]+1))
+	if (!isValidRange(pos))
 		return ;
 	offset = bytes - content[pos];
 	content = static_cast<char*>(realloc(content, len + offset));
 	if (offset > 0)
 		memcpy(content + pos + offset + 1, content + pos + 1, len - pos);
 	else
-		memcpy(content + pos + 1, content + pos - offset + 1, len - pos);
+		memcpy(content + pos + 1, content + pos - offset + 1, len + offset - pos);
 	len += offset;
 	content[pos] = bytes;
 }
 
-void	Xenoreader::strcpy(ssize_t pos, char *str)
+void	Xenoreader::strcpy(ssize_t pos, const char *str)
 {
 	int8_t	newlen;
 
-	if (getByte(pos+content[pos]+1))
+	if (!isValidRange(pos))
 		return ;
 	newlen = static_cast<int8_t>(strlen(str));
 	if (newlen != getByte(pos))
@@ -85,10 +91,20 @@ void	Xenoreader::strcpy(ssize_t pos, char *str)
 	memcpy(content+pos+1, str, newlen);
 }
 
-size_t	Xenoreader::getNextLine(char*& ptr)
+ssize_t	Xenoreader::getNextLine(char*& ptr)
 {
-	ptr = NULL;
-	return (0);
+	for (; pos < len; pos++)
+	{
+		if (isValidRange(pos))
+		{
+			//Check this
+			size_t	ret = pos;
+			ptr = strdup(content+pos+1);
+			pos += 1;//content[pos]+2;
+			return (ret);
+		}
+	}
+	return (-1);
 }
 
 void	Xenoreader::setPosition(size_t newpos)
