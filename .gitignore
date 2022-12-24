@@ -9,3 +9,4 @@ out*
 xenord.exe
 obj
 build*
+*.o
