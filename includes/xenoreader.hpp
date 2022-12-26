@@ -6,7 +6,7 @@
 /*   By: AleXwern <AleXwern@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/25 23:59:31 by AleXwern          #+#    #+#             */
-/*   Updated: 2022/12/23 23:36:20 by AleXwern         ###   ########.fr       */
+/*   Updated: 2022/12/26 23:35:43 by AleXwern         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,12 +39,14 @@ private:
 public:
 	Xenoreader(const char *file, bool silenceOut = false);
 	~Xenoreader(void);
+	//Check if the file is a valid one.
+	bool	isValidFile(void);
 	//Return a single byte from spesified location
 	char	getByte(size_t pos);
 	//Get the size of the EVC file
 	ssize_t	getLength(void);
 	//Checks if pos is a valid string size for an area
-	bool		isValidRange(size_t pos);
+	bool	isValidRange(size_t pos);
 	//Modify the memory array at pos to be 'bytes' long
 	//Must point to a valid memory area
 	void	insertBytes(ssize_t pos, int8_t bytes);

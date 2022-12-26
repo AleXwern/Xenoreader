@@ -6,7 +6,7 @@
 /*   By: AleXwern <AleXwern@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/06 17:17:48 by AleXwern          #+#    #+#             */
-/*   Updated: 2022/12/23 23:39:14 by AleXwern         ###   ########.fr       */
+/*   Updated: 2022/12/26 23:35:52 by AleXwern         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,6 +44,11 @@ Xenoreader::~Xenoreader(void)
 	close(fd);
 	if (content)
 		free(content);
+}
+
+bool		Xenoreader::isValidFile(void)
+{
+	return (fd > 0);
 }
 
 char		Xenoreader::getByte(size_t pos)

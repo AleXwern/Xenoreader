@@ -6,7 +6,7 @@
 /*   By: AleXwern <AleXwern@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/24 01:06:12 by AleXwern          #+#    #+#             */
-/*   Updated: 2022/12/24 01:43:08 by AleXwern         ###   ########.fr       */
+/*   Updated: 2022/12/26 22:58:09 by AleXwern         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,6 +49,23 @@ TEST_CASE("lastLineIsLastPushed")
 TEST_CASE("parseFourPartFile")
 {
 	Xenoheader	xeno;
+	xenodata.setPosition(0);
 	xeno.parseDataChunck(xenodata);
 	REQUIRE(xeno.length() == 4);
+	xeno.outputFile("peepee.txt");
+}
+
+TEST_CASE("handleHeaderFile")
+{
+	Xenoheader	parser;
+	Xenoheader	reader;
+
+	xenodata.setPosition(0);
+	parser.parseDataChunck(xenodata);
+	parser.outputFile("demo.txt");
+
+	reader.inputFile("demo.txt");
+	REQUIRE(reader.length() == 4);
+	REQUIRE(reader.get(3).first == parser.get(3).first);
+	REQUIRE(ft_strequ(reader.get(3).second, "maybe this will work"));
 }

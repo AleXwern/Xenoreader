@@ -6,7 +6,7 @@
 /*   By: AleXwern <AleXwern@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/07 22:19:06 by AleXwern          #+#    #+#             */
-/*   Updated: 2022/12/24 01:57:13 by AleXwern         ###   ########.fr       */
+/*   Updated: 2022/12/26 22:50:59 by AleXwern         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,23 +52,40 @@ void	Xenoheader::parseDataChunck(Xenoreader& xeno)
 void	Xenoheader::outputFile(const char *name)
 {
 	int		fd = open(name, O_WRONLY | O_CREAT | O_TRUNC, 0644);
-	char	linedata[0xff+4];
+	char	linedata[0xff+10];
 
 	if (fd == -1)
 		return;
 	for (t_line line : data)
 	{
-		ssize_t datalen = sizeof(line.first) + strlen(line.second);
+		ssize_t datalen = strlen(line.second) + sizeof(line.first);
 		memcpy(linedata, &line.first, sizeof(line.first));
-		strcpy(linedata+4, line.second);
-		linedata[datalen] = '\n';
+		linedata[sizeof(line.first)] = (char)strlen(line.second);
+		strcpy(linedata+1+sizeof(line.first), line.second);
 		write(fd, linedata, datalen+1);
 	}
 	close(fd);
 }
 
-void	Xenoheader::parseFile(const char *name)
+void	Xenoheader::inputFile(const char *name)
 {
+	int		fd = open(name, O_RDONLY);
+	ssize_t pos;
+	char	str[0xff];
+	char	len;
+
+	if (fd == -1)
+		return;
+	while (true)
+	{
+		if (read(fd, &pos, sizeof(pos)) < 1)
+			break;
+		read(fd, &len, 1);
+		read(fd, str, len);
+		str[len] = '\0';
+		insert({pos, strdup(str)});
+	}
+	close(fd);
 }
 
 void	Xenoheader::printDebug(void)
