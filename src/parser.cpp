@@ -6,7 +6,7 @@
 /*   By: AleXwern <AleXwern@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/06 17:56:36 by AleXwern          #+#    #+#             */
-/*   Updated: 2022/12/26 23:39:27 by AleXwern         ###   ########.fr       */
+/*   Updated: 2022/12/26 23:51:01 by AleXwern         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,8 +19,6 @@ void	*parser(void *dat)
 {
 	uint32_t	nameid = *(t_uint32*)dat;
 	char		name[22];
-	size_t		pos;
-	char		*line;
 
 	while (nameid < 1'000'000)
 	{
