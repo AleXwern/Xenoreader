@@ -6,7 +6,7 @@
 /*   By: AleXwern <AleXwern@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/06 17:56:36 by AleXwern          #+#    #+#             */
-/*   Updated: 2022/12/26 23:51:01 by AleXwern         ###   ########.fr       */
+/*   Updated: 2022/12/26 23:53:40 by AleXwern         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ const size_t	NUM_THREADS = 20;
 void	*parser(void *dat)
 {
 	uint32_t	nameid = *(t_uint32*)dat;
-	char		name[22];
+	char		name[32];
 
 	while (nameid < 1'000'000)
 	{
@@ -26,8 +26,10 @@ void	*parser(void *dat)
 		Xenoreader	rawfile(name, true);
 		if (rawfile.isValidFile())
 		{
+			sprintf(name, "out/%03d_%03d.txt", nameid / 1000, nameid % 1000);
 			Xenoheader	lines;
 			lines.parseDataChunck(rawfile);
+			lines.outputFile(name);
 			//printf("Parsed %lu lines\n", lines.length());
 		}
 		nameid += NUM_THREADS;
