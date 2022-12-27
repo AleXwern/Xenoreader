@@ -6,7 +6,7 @@
 /*   By: AleXwern <AleXwern@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/07 22:19:06 by AleXwern          #+#    #+#             */
-/*   Updated: 2022/12/27 21:16:15 by AleXwern         ###   ########.fr       */
+/*   Updated: 2022/12/27 23:03:08 by AleXwern         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,7 +68,7 @@ void	Xenoheader::outputFile(const char *name)
 	close(fd);
 }
 
-void	Xenoheader::inputFile(const char *name)
+bool	Xenoheader::inputFile(const char *name)
 {
 	int		fd = open(name, O_RDONLY);
 	ssize_t pos;
@@ -76,7 +76,7 @@ void	Xenoheader::inputFile(const char *name)
 	char	len;
 
 	if (fd == -1)
-		return;
+		return (false);
 	while (true)
 	{
 		if (read(fd, &pos, sizeof(pos)) < 1)
@@ -87,6 +87,7 @@ void	Xenoheader::inputFile(const char *name)
 		insert({pos, strdup(str)});
 	}
 	close(fd);
+	return (true);
 }
 
 void	Xenoheader::printDebug(void)

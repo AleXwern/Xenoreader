@@ -6,7 +6,7 @@
 /*   By: AleXwern <AleXwern@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/07 22:14:47 by AleXwern          #+#    #+#             */
-/*   Updated: 2022/12/26 22:42:16 by AleXwern         ###   ########.fr       */
+/*   Updated: 2022/12/27 23:02:42 by AleXwern         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,7 @@ public:
 	size_t	length(void);
 	void	parseDataChunck(Xenoreader& xeno);
 	void	outputFile(const char *name);
-	void	inputFile(const char *name);
+	bool	inputFile(const char *name);
 	void	printDebug(void);
 };
 

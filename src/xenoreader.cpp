@@ -6,7 +6,7 @@
 /*   By: AleXwern <AleXwern@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/06 17:17:48 by AleXwern          #+#    #+#             */
-/*   Updated: 2022/12/27 21:03:34 by AleXwern         ###   ########.fr       */
+/*   Updated: 2022/12/27 23:01:38 by AleXwern         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ Xenoreader::Xenoreader(const char *file, bool silenceOut)
 	char	buffer[BYTES_PER_READ];
 	ssize_t	bytes;
 	
-	fd = open(file, O_RDONLY, 0);
+	fd = open(file, O_RDWR, 0);
 	if (fd == -1)
 		return;
 	while (true)
@@ -77,7 +77,11 @@ void	Xenoreader::insertBytes(ssize_t pos, int8_t bytes)
 	if (!isValidRange(pos))
 		return ;
 	offset = bytes - content[pos];
-	content = static_cast<char*>(realloc(content, len + offset));
+	if (offset)
+	{
+		printf("Attempted realloc size %ld -> %ld\n", len, len + offset);
+		content = static_cast<char*>(realloc(content, len + offset));
+	}
 	if (offset > 0)
 		memcpy(content + pos + offset + 1, content + pos + 1, len - pos);
 	else
@@ -93,6 +97,7 @@ void	Xenoreader::strcpy(ssize_t pos, const char *str)
 	if (!isValidRange(pos))
 		return ;
 	newlen = static_cast<int8_t>(strlen(str));
+	//printf("-->Insert attempt:\n(%s)\n(%s)\nDiff: %ld\n", str, &content[pos+1], (long)strlen(str) - (long)strlen(&content[pos+1]));
 	if (newlen != getByte(pos))
 		insertBytes(pos, newlen);
 	memcpy(content+pos+1, str, newlen);
@@ -117,4 +122,14 @@ ssize_t	Xenoreader::getNextLine(char*& ptr)
 void	Xenoreader::setPosition(size_t newpos)
 {
 	pos = newpos;
+}
+
+bool	Xenoreader::updateFile(void)
+{
+	if (lseek(fd, 0, SEEK_SET) != 0)
+		return (false);
+	if (ftruncate(fd, len) < 0)
+		return (false);
+	for (ssize_t written = 0; written < len; written += write(fd, content+written, len-written)) {}
+	return (true);
 }

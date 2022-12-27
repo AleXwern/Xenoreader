@@ -6,7 +6,7 @@
 /*   By: AleXwern <AleXwern@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/25 23:59:31 by AleXwern          #+#    #+#             */
-/*   Updated: 2022/12/27 21:02:49 by AleXwern         ###   ########.fr       */
+/*   Updated: 2022/12/27 22:32:57 by AleXwern         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,6 +59,8 @@ public:
 	ssize_t	getNextLine(char*& ptr);
 	//Sets the line seek position to spesified position
 	void	setPosition(size_t newpos);
+	//Update assigned file with new contents
+	bool	updateFile(void);
 };
 
 #endif

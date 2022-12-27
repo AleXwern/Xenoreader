@@ -6,13 +6,13 @@
 /*   By: AleXwern <AleXwern@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/06 18:06:14 by AleXwern          #+#    #+#             */
-/*   Updated: 2022/11/06 18:17:26 by AleXwern         ###   ########.fr       */
+/*   Updated: 2022/12/27 21:37:59 by AleXwern         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef PARSER_HPP
 #define PARSER_HPP
 
-void	deploy_threads(void);
+void	deploy_threads(char type);
 
 #endif

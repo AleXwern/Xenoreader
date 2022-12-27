@@ -6,7 +6,7 @@
 /*   By: AleXwern <AleXwern@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/06 17:55:23 by AleXwern          #+#    #+#             */
-/*   Updated: 2022/11/06 18:07:24 by AleXwern         ###   ########.fr       */
+/*   Updated: 2022/12/27 21:38:02 by AleXwern         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,8 +16,7 @@ int		main(int ac, char **av)
 {
 	if (ac < 2)
 		return (1);
-	if (av[1][0] == 'r')
-		deploy_threads();
+	deploy_threads(av[1][0]);
 	//else if (av[1][0] == 'w')
 	//	reader('w');
 	return (0);
