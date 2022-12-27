@@ -6,7 +6,7 @@
 /*   By: AleXwern <AleXwern@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/07 22:19:06 by AleXwern          #+#    #+#             */
-/*   Updated: 2022/12/26 22:50:59 by AleXwern         ###   ########.fr       */
+/*   Updated: 2022/12/27 21:16:15 by AleXwern         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,7 +62,8 @@ void	Xenoheader::outputFile(const char *name)
 		memcpy(linedata, &line.first, sizeof(line.first));
 		linedata[sizeof(line.first)] = (char)strlen(line.second);
 		strcpy(linedata+1+sizeof(line.first), line.second);
-		write(fd, linedata, datalen+1);
+		linedata[datalen+1] = '\n';
+		write(fd, linedata, datalen+2);
 	}
 	close(fd);
 }
@@ -81,7 +82,7 @@ void	Xenoheader::inputFile(const char *name)
 		if (read(fd, &pos, sizeof(pos)) < 1)
 			break;
 		read(fd, &len, 1);
-		read(fd, str, len);
+		read(fd, str, len+1);
 		str[len] = '\0';
 		insert({pos, strdup(str)});
 	}

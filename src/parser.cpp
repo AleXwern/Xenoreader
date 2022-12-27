@@ -6,7 +6,7 @@
 /*   By: AleXwern <AleXwern@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/06 17:56:36 by AleXwern          #+#    #+#             */
-/*   Updated: 2022/12/26 23:53:40 by AleXwern         ###   ########.fr       */
+/*   Updated: 2022/12/27 21:21:50 by AleXwern         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,14 +23,14 @@ void	*parser(void *dat)
 	while (nameid < 1'000'000)
 	{
 		sprintf(name, "maptool/%03d_%03d.evc", nameid / 1000, nameid % 1000);
-		Xenoreader	rawfile(name, true);
+		Xenoreader	rawfile(name);
 		if (rawfile.isValidFile())
 		{
 			sprintf(name, "out/%03d_%03d.txt", nameid / 1000, nameid % 1000);
 			Xenoheader	lines;
 			lines.parseDataChunck(rawfile);
 			lines.outputFile(name);
-			//printf("Parsed %lu lines\n", lines.length());
+			printf("Parsed %lu lines\n", lines.length());
 		}
 		nameid += NUM_THREADS;
 	}

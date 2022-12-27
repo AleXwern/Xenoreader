@@ -6,7 +6,7 @@
 /*   By: AleXwern <AleXwern@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/06 17:17:48 by AleXwern          #+#    #+#             */
-/*   Updated: 2022/12/26 23:35:52 by AleXwern         ###   ########.fr       */
+/*   Updated: 2022/12/27 21:03:34 by AleXwern         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,6 +60,8 @@ char		Xenoreader::getByte(size_t pos)
 
 bool		Xenoreader::isValidRange(size_t pos)
 {
+	if (!getByte(pos))
+		return (false);
 	return (!getByte(pos + getByte(pos) + 1));
 }
 
