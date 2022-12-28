@@ -6,7 +6,7 @@
 /*   By: AleXwern <AleXwern@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/06 17:56:36 by AleXwern          #+#    #+#             */
-/*   Updated: 2022/12/27 23:05:24 by AleXwern         ###   ########.fr       */
+/*   Updated: 2022/12/28 18:30:52 by AleXwern         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,12 +14,13 @@
 #include "xenoheader.hpp"
 
 const size_t	NUM_THREADS = 20;
+const uint32_t	FILENUM		= 1'000'000;
 
 void	*parser(void *dat)
 {
 	char		name[32];
 
-	for (uint32_t nameid = *(t_uint32*)dat; nameid < 1'000'000; nameid += NUM_THREADS)
+	for (uint32_t nameid = *(t_uint32*)dat; nameid < FILENUM; nameid += NUM_THREADS)
 	{
 		sprintf(name, "maptool/%03d_%03d.evc", nameid / 1000, nameid % 1000);
 		Xenoreader	rawfile(name, true);
@@ -29,7 +30,8 @@ void	*parser(void *dat)
 			continue;
 		sprintf(name, "out/%03d_%03d.txt", nameid / 1000, nameid % 1000);
 		lines.parseDataChunck(rawfile);
-		lines.outputFile(name);
+		if (lines.length() > 0)
+			lines.outputFile(name);
 		printf("Parsed %lu lines from %s\n", lines.length(), name);
 	}
 	return (NULL);
@@ -39,7 +41,7 @@ void	*writer(void *dat)
 {
 	char		name[32];
 
-	for (uint32_t nameid = *(t_uint32*)dat; nameid < 1'000'000; nameid += NUM_THREADS)
+	for (uint32_t nameid = *(t_uint32*)dat; nameid < FILENUM; nameid += NUM_THREADS)
 	{
 		sprintf(name, "maptool2/%03d_%03d.evc", nameid / 1000, nameid % 1000);
 		Xenoreader	rawfile(name, true);
@@ -50,8 +52,9 @@ void	*writer(void *dat)
 		sprintf(name, "out/%03d_%03d.txt", nameid / 1000, nameid % 1000);
 		if (!lines.inputFile(name))
 			continue;
-		for (size_t i = 0; i < lines.length(); i++)
+		for (size_t i = lines.length() - 1; i > 0; i--)
 			rawfile.strcpy(lines.get(i).first, lines.get(i).second);
+		//lines.printDebug();
 		printf(rawfile.updateFile() ? "Success with %s!\n" : "Failure with %s!\n", name);
 	}
 	return (NULL);

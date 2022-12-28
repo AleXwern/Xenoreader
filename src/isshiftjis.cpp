@@ -6,7 +6,7 @@
 /*   By: AleXwern <AleXwern@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/06 18:38:49 by AleXwern          #+#    #+#             */
-/*   Updated: 2022/11/08 23:45:31 by AleXwern         ###   ########.fr       */
+/*   Updated: 2022/12/28 17:45:27 by AleXwern         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,4 +30,17 @@ inline int	is_shiftjis(t_uint8 b1, t_uint8 b2)
 			return (2);
 	}
 	return (ft_isprint(b1));
+}
+
+bool		is_stringJis(const char *str, u_int8_t len)
+{
+	for (int i = 0; i < len; i++)
+	{
+		int	check = is_shiftjis(str[i], str[i+1]);
+		if (!check)
+			return (false);
+		else if (check == 2)
+			i++;
+	}
+	return (true);
 }

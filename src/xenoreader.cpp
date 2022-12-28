@@ -6,7 +6,7 @@
 /*   By: AleXwern <AleXwern@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/06 17:17:48 by AleXwern          #+#    #+#             */
-/*   Updated: 2022/12/27 23:01:38 by AleXwern         ###   ########.fr       */
+/*   Updated: 2022/12/28 18:30:33 by AleXwern         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,14 +78,11 @@ void	Xenoreader::insertBytes(ssize_t pos, int8_t bytes)
 		return ;
 	offset = bytes - content[pos];
 	if (offset)
-	{
-		printf("Attempted realloc size %ld -> %ld\n", len, len + offset);
 		content = static_cast<char*>(realloc(content, len + offset));
-	}
-	if (offset > 0)
-		memcpy(content + pos + offset + 1, content + pos + 1, len - pos);
+	if (offset >= 0)
+		memcpy(content + pos + offset + 1, content + pos + 1, len - pos - 1);
 	else
-		memcpy(content + pos + 1, content + pos - offset + 1, len + offset - pos);
+		memcpy(content + pos + 1, content + pos - offset + 1, len + offset - pos - 1);
 	len += offset;
 	content[pos] = bytes;
 }
@@ -96,8 +93,8 @@ void	Xenoreader::strcpy(ssize_t pos, const char *str)
 
 	if (!isValidRange(pos))
 		return ;
-	newlen = static_cast<int8_t>(strlen(str));
-	//printf("-->Insert attempt:\n(%s)\n(%s)\nDiff: %ld\n", str, &content[pos+1], (long)strlen(str) - (long)strlen(&content[pos+1]));
+	newlen = static_cast<uint8_t>(strlen(str));
+	//printf("Lengths: %u - %u at %ld\n", (unsigned char)getByte(pos), newlen, pos);
 	if (newlen != getByte(pos))
 		insertBytes(pos, newlen);
 	memcpy(content+pos+1, str, newlen);
@@ -109,10 +106,12 @@ ssize_t	Xenoreader::getNextLine(char*& ptr)
 	{
 		if (isValidRange(pos))
 		{
-			//Check this
+			if (!is_stringJis(content+pos+1, getByte(pos)))
+				continue;
 			size_t	ret = pos;
 			ptr = strdup(content+pos+1);
 			pos += 1;//content[pos]+2;
+			//printf("Str found: %u at %lu\n", (unsigned char)strlen(ptr), ret);
 			return (ret);
 		}
 	}
@@ -128,7 +127,7 @@ bool	Xenoreader::updateFile(void)
 {
 	if (lseek(fd, 0, SEEK_SET) != 0)
 		return (false);
-	if (ftruncate(fd, len) < 0)
+	if (ftruncate(fd, 1) < 0)
 		return (false);
 	for (ssize_t written = 0; written < len; written += write(fd, content+written, len-written)) {}
 	return (true);

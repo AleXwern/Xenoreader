@@ -6,7 +6,7 @@
 /*   By: AleXwern <AleXwern@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/07 22:19:06 by AleXwern          #+#    #+#             */
-/*   Updated: 2022/12/27 23:03:08 by AleXwern         ###   ########.fr       */
+/*   Updated: 2022/12/28 17:21:22 by AleXwern         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,9 +58,11 @@ void	Xenoheader::outputFile(const char *name)
 		return;
 	for (t_line line : data)
 	{
-		ssize_t datalen = strlen(line.second) + sizeof(line.first);
+		if (strlen(line.second) > 250)
+			continue;
+		ssize_t datalen = static_cast<uint8_t>(strlen(line.second)) + sizeof(line.first);
 		memcpy(linedata, &line.first, sizeof(line.first));
-		linedata[sizeof(line.first)] = (char)strlen(line.second);
+		linedata[sizeof(line.first)] = static_cast<uint8_t>(strlen(line.second));
 		strcpy(linedata+1+sizeof(line.first), line.second);
 		linedata[datalen+1] = '\n';
 		write(fd, linedata, datalen+2);
