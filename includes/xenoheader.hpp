@@ -6,7 +6,7 @@
 /*   By: AleXwern <AleXwern@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/07 22:14:47 by AleXwern          #+#    #+#             */
-/*   Updated: 2022/12/27 23:02:42 by AleXwern         ###   ########.fr       */
+/*   Updated: 2023/02/05 19:34:05 by AleXwern         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,8 +33,8 @@ public:
 	t_line	get(size_t pos);
 	size_t	length(void);
 	void	parseDataChunck(Xenoreader& xeno);
-	void	outputFile(const char *name);
-	bool	inputFile(const char *name);
+	void	outputFile(const char *name, const char *header);
+	bool	inputFile(const char *name, const char *header);
 	void	printDebug(void);
 };
 

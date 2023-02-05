@@ -6,7 +6,7 @@
 /*   By: AleXwern <AleXwern@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/06 17:17:48 by AleXwern          #+#    #+#             */
-/*   Updated: 2022/12/28 18:30:33 by AleXwern         ###   ########.fr       */
+/*   Updated: 2023/02/05 23:55:55 by AleXwern         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ Xenoreader::Xenoreader(const char *file, bool silenceOut)
 		if (bytes < 1)
 			break;
 		content = static_cast<char*>(realloc(content, len + bytes));
-		memcpy(content + len, buffer, bytes);
+		memmove(content + len, buffer, bytes);
 		len += bytes;
 	}
 	if (!silenceOut)
@@ -79,10 +79,13 @@ void	Xenoreader::insertBytes(ssize_t pos, int8_t bytes)
 	offset = bytes - content[pos];
 	if (offset)
 		content = static_cast<char*>(realloc(content, len + offset));
-	if (offset >= 0)
-		memcpy(content + pos + offset + 1, content + pos + 1, len - pos - 1);
 	else
-		memcpy(content + pos + 1, content + pos - offset + 1, len + offset - pos - 1);
+		return;
+	if (offset > 0)
+		memmove(&content[pos + offset + 1], &content[pos + 1], len-pos-1);
+	else
+		memmove(&content[pos], &content[pos - offset], len+offset-pos);
+	//printf("%ld == %ld\n", len, (pos + 1 - offset) + (len+offset-(1+pos)));
 	len += offset;
 	content[pos] = bytes;
 }
@@ -94,10 +97,13 @@ void	Xenoreader::strcpy(ssize_t pos, const char *str)
 	if (!isValidRange(pos))
 		return ;
 	newlen = static_cast<uint8_t>(strlen(str));
-	//printf("Lengths: %u - %u at %ld\n", (unsigned char)getByte(pos), newlen, pos);
-	if (newlen != getByte(pos))
+	//Currently something is buggy and changes the trailing bytes of the file if newlen < oldlen.
+	//Temporary fix is to pad the size with spaces so the area is never shrunk.
+	if (newlen > getByte(pos))
 		insertBytes(pos, newlen);
-	memcpy(content+pos+1, str, newlen);
+	else
+		memset(content+pos+1, ' ', getByte(pos));
+	memmove(content+pos+1, str, newlen);
 }
 
 ssize_t	Xenoreader::getNextLine(char*& ptr)

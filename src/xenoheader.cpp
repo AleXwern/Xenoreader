@@ -6,7 +6,7 @@
 /*   By: AleXwern <AleXwern@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/07 22:19:06 by AleXwern          #+#    #+#             */
-/*   Updated: 2022/12/28 17:21:22 by AleXwern         ###   ########.fr       */
+/*   Updated: 2023/02/05 22:16:00 by AleXwern         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,46 +49,65 @@ void	Xenoheader::parseDataChunck(Xenoreader& xeno)
 		insert({pos, ptr});
 }
 
-void	Xenoheader::outputFile(const char *name)
+void	Xenoheader::outputFile(const char *name, const char *header)
 {
-	int		fd = open(name, O_WRONLY | O_CREAT | O_TRUNC, 0644);
-	char	linedata[0xff+10];
+	int		fd_file = open(name, O_WRONLY | O_CREAT | O_TRUNC, 0644);
+	int		fd_head = open(header, O_WRONLY | O_CREAT | O_TRUNC, 0644);
 
-	if (fd == -1)
+	if (fd_file == -1)
 		return;
 	for (t_line line : data)
 	{
 		if (strlen(line.second) > 250)
 			continue;
-		ssize_t datalen = static_cast<uint8_t>(strlen(line.second)) + sizeof(line.first);
-		memcpy(linedata, &line.first, sizeof(line.first));
-		linedata[sizeof(line.first)] = static_cast<uint8_t>(strlen(line.second));
-		strcpy(linedata+1+sizeof(line.first), line.second);
-		linedata[datalen+1] = '\n';
-		write(fd, linedata, datalen+2);
+		write(fd_head, &line.first, sizeof(line.first));
+		write(fd_file, line.second, static_cast<uint8_t>(strlen(line.second)));
+		write(fd_file, "\n", 1);
 	}
-	close(fd);
+	close(fd_file);
+	close(fd_head);
 }
 
-bool	Xenoheader::inputFile(const char *name)
+static char	**readFile(int fd)
 {
-	int		fd = open(name, O_RDONLY);
-	ssize_t pos;
-	char	str[0xff];
-	char	len;
+	char	*str = NULL;
+	char	buffer[BYTES_PER_READ];
+	ssize_t	bytes;
+	ssize_t	len = 0;
 
-	if (fd == -1)
-		return (false);
 	while (true)
 	{
-		if (read(fd, &pos, sizeof(pos)) < 1)
+		bytes = read(fd, buffer, BYTES_PER_READ);
+		if (bytes < 1)
 			break;
-		read(fd, &len, 1);
-		read(fd, str, len+1);
-		str[len] = '\0';
-		insert({pos, strdup(str)});
+		str = static_cast<char*>(realloc(str, len + bytes + 1));
+		memcpy(str + len, buffer, bytes);
+		len += bytes;
 	}
-	close(fd);
+	str[len] = '\0';
+	return (ft_strsplit(str, '\n'));
+}
+
+bool	Xenoheader::inputFile(const char *name, const char *header)
+{
+	int		fd_file = open(name, O_RDONLY);
+	int		fd_head = open(header, O_RDONLY);
+	ssize_t pos;
+	char	**str = NULL;
+	char	len;
+
+	if (fd_file == -1)
+		return (false);
+	str = readFile(fd_file);
+	while (true)
+	{
+		if (read(fd_head, &pos, sizeof(pos)) != sizeof(pos))
+			break;
+		insert({pos, strdup(*str)});
+		str++;
+	}
+	close(fd_head);
+	close(fd_file);
 	return (true);
 }
 
