@@ -6,7 +6,7 @@
 /*   By: AleXwern <AleXwern@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/07 22:19:06 by AleXwern          #+#    #+#             */
-/*   Updated: 2023/02/05 22:16:00 by AleXwern         ###   ########.fr       */
+/*   Updated: 2023/02/11 18:35:20 by AleXwern         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -99,13 +99,16 @@ bool	Xenoheader::inputFile(const char *name, const char *header)
 	if (fd_file == -1)
 		return (false);
 	str = readFile(fd_file);
-	while (true)
+	//while (true)
+	for (int i = 0; i < 255; i++)
 	{
-		if (read(fd_head, &pos, sizeof(pos)) != sizeof(pos))
+		if (read(fd_head, &pos, sizeof(pos)) != sizeof(pos) || *str == NULL)
 			break;
-		insert({pos, strdup(*str)});
-		str++;
+		printf("HH\n");
+		insert({pos, strdup(*str+i)});
+		free(*str+i);
 	}
+	free(str);
 	close(fd_head);
 	close(fd_file);
 	return (true);

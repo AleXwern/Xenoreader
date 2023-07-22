@@ -6,7 +6,7 @@
 /*   By: AleXwern <AleXwern@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/06 17:56:36 by AleXwern          #+#    #+#             */
-/*   Updated: 2023/02/05 22:30:38 by AleXwern         ###   ########.fr       */
+/*   Updated: 2023/07/22 22:25:29 by AleXwern         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 #include "xenoheader.hpp"
 
 const size_t	NUM_THREADS = 20;
-const uint32_t	FILENUM		= 2;//'000'000;
+const uint32_t	FILENUM		= 1'000'000;
 
 void	*parser(void *dat)
 {
