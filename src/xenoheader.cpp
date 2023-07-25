@@ -6,7 +6,7 @@
 /*   By: AleXwern <AleXwern@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/07 22:19:06 by AleXwern          #+#    #+#             */
-/*   Updated: 2023/02/11 18:35:20 by AleXwern         ###   ########.fr       */
+/*   Updated: 2023/07/24 15:01:16 by AleXwern         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,7 +68,7 @@ void	Xenoheader::outputFile(const char *name, const char *header)
 	close(fd_head);
 }
 
-static char	**readFile(int fd)
+char	**readFile(int fd)
 {
 	char	*str = NULL;
 	char	buffer[BYTES_PER_READ];
@@ -85,6 +85,7 @@ static char	**readFile(int fd)
 		len += bytes;
 	}
 	str[len] = '\0';
+	//printf("%d -> %s\n", fd, str);
 	return (ft_strsplit(str, '\n'));
 }
 
@@ -99,14 +100,13 @@ bool	Xenoheader::inputFile(const char *name, const char *header)
 	if (fd_file == -1)
 		return (false);
 	str = readFile(fd_file);
-	//while (true)
 	for (int i = 0; i < 255; i++)
 	{
 		if (read(fd_head, &pos, sizeof(pos)) != sizeof(pos) || *str == NULL)
 			break;
-		printf("HH\n");
-		insert({pos, strdup(*str+i)});
-		free(*str+i);
+		//printf("HH\n");
+		insert({pos, strdup(str[i])});
+		free(str[i]);
 	}
 	free(str);
 	close(fd_head);
